@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
-import '../lib/src/task.dart';
-
+import 'package:task_manager/src/task.dart';
 void main() {
   group('Task Model Tests', () {
     setUp(() {
