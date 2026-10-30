@@ -55,6 +55,7 @@ void main() {
       Task task = manager.add('Study Dart');
       expect(manager.findById(1), same(task));
     });
+    
     test('findById returns null for a missing id', () {
       manager.add('Study Dart');
       expect(manager.findById(99), isNull);
