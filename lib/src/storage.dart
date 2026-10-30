@@ -5,49 +5,39 @@ import 'task.dart';
 class Storage {
   final String filePath;
 
-  Storage({
-    this.filePath = 'tasks.json',
-  });
+  Storage({this.filePath = 'tasks.json'});
 
   List<Task> load() {
     final file = File(filePath);
-    if (!file.existsSync()) {
-      return [];
+
+    if (!file.existsSync()) return [];
+
+    final text = file.readAsStringSync();
+    if (text.trim().isEmpty) return [];
+
+    try {
+      final data = jsonDecode(text);
+      if (data is! List) {
+        throw const FormatException('Root must be a list');
+      }
+      return data.map((e) => Task.fromJson(e as Map<String, dynamic>)).toList();
+    } on FormatException catch (_) {
+      return _recover(file);
+    } on TypeError catch (_) {
+      return _recover(file);
     }
-    String jsonString = file.readAsStringSync();
-    if (jsonString.trim().isEmpty) {
-      return [];
-    }
-    List<dynamic> jsonList = jsonDecode(jsonString);
-    return jsonList.map((item) {
-      Map<String, dynamic> map = item as Map<String, dynamic>;
-      return Task(
-        id: map['id'],
-        title: map['title'],
-        createdAt: DateTime.parse(map['createdAt']),
-        description: map['description'] ?? '',
-        dueDate: map['dueDate'] != null ? DateTime.parse(map['dueDate']) : null,
-        isDone: map['isDone'] ?? false,
-        category: map['category'] ?? '',
-        tags: Set<String>.from(map['tags'] ?? []),
-      );
-    }).toList();
+  }
+
+  List<Task> _recover(File file) {
+    stderr.writeln(
+        'Warning: $filePath is corrupted. Moved to $filePath.bak, starting empty.');
+    file.renameSync('$filePath.bak');
+    return [];
   }
 
   void save(List<Task> tasks) {
-    List<Map<String, dynamic>> tasksList = tasks.map((task) {
-      return {
-        'id': task.id,
-        'title': task.title,
-        'createdAt': task.createdAt.toIso8601String(),
-        'description': task.description,
-        'dueDate': task.dueDate?.toIso8601String(),
-        'isDone': task.isDone,
-        'category': task.category,
-        'tags': task.tags.toList(),
-      };
-    }).toList();
-
-    File(filePath).writeAsStringSync(jsonEncode(tasksList));
+    final list = tasks.map((t) => t.toJson()).toList();
+    const encoder = JsonEncoder.withIndent('  ');
+    File(filePath).writeAsStringSync(encoder.convert(list));
   }
 }
