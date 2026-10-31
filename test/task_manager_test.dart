@@ -11,6 +11,11 @@ void main() {
       manager = TaskManager();
     });
 
+    test('constructor with initial list exposes tasks in getAll', () {
+      final custom = TaskManager([Task(title: 'A'), Task(title: 'B')]);
+      expect(custom.getAll().length, 2);
+    });
+
     test('add increases length and returns the task', () {
       Task task = manager.add('Study Dart');
       expect(manager.getAll().length, 1);
@@ -55,7 +60,7 @@ void main() {
       Task task = manager.add('Study Dart');
       expect(manager.findById(1), same(task));
     });
-    
+
     test('findById returns null for a missing id', () {
       manager.add('Study Dart');
       expect(manager.findById(99), isNull);
