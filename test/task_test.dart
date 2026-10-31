@@ -1,12 +1,13 @@
 import 'package:test/test.dart';
 import 'package:task_manager/src/task.dart';
+
 void main() {
   group('Task Model Tests', () {
     setUp(() {
       Task.resetCounter();
     });
 
-    test('Defult Values For New Task', () {
+    test('Default Values For New Task', () {
       final task = Task(title: 'Purchasing supplies');
 
       expect(task.category, equals('general'));
@@ -86,9 +87,8 @@ void main() {
       expect(task.description, equals(''));
       expect(task.dueDate, isNull);
       expect(task.isDone, isFalse);
-      expect(
-          task.category, equals('general')); 
-      expect(task.tags, isEmpty); 
+      expect(task.category, equals('general'));
+      expect(task.tags, isEmpty);
     });
   });
 }
