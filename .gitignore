@@ -3,4 +3,5 @@
 .dart_tool/
 # Runtime data created by the app
 tasks.json
+tasks.json.bak
 *.bak
