@@ -46,7 +46,7 @@ class Task {
     final String category = json['category'] as String? ?? 'general';
     final Set<String> tags = {};
 
-    List<dynamic>? rawTags = json['tags'] as List<dynamic>?;
+    final List<dynamic>? rawTags = json['tags'] as List<dynamic>?;
     if (rawTags != null) {
       for (var element in rawTags) {
         tags.add(element);

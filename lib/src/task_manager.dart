@@ -27,7 +27,7 @@ class TaskManager {
   }
 
   bool markDone(int id) {
-    Task? targetTask = findById(id);
+    final Task? targetTask = findById(id);
     if (targetTask != null) {
       targetTask.isDone = true;
       return true;

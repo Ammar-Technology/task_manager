@@ -17,13 +17,13 @@ void main() {
     });
 
     test('add increases length and returns the task', () {
-      Task task = manager.add('Study Dart');
+      final Task task = manager.add('Study Dart');
       expect(manager.getAll().length, 1);
       expect(task.title, 'Study Dart');
     });
 
     test('add trims the title', () {
-      Task task = manager.add("  Study Dart  ");
+      final task = manager.add("  Study Dart  ");
       expect(task.title, 'Study Dart');
     });
 
@@ -45,19 +45,19 @@ void main() {
     });
 
     test('markDone marks an existing task as done', () {
-      Task task = manager.add('Study Dart');
+      final task = manager.add('Study Dart');
       expect(manager.markDone(1), true);
       expect(task.isDone, true);
     });
 
     test('markDone returns false for a missing id', () {
-      Task task = manager.add('Study Dart');
+      final Task task = manager.add('Study Dart');
       expect(manager.markDone(99), false);
       expect(task.isDone, false);
     });
 
     test('findById returns the task when it exists', () {
-      Task task = manager.add('Study Dart');
+      final Task task = manager.add('Study Dart');
       expect(manager.findById(1), same(task));
     });
 
@@ -72,17 +72,17 @@ void main() {
     });
 
     test('search is case-insensitive', () {
-      Task task = manager.add('Buy milk');
+      final Task task = manager.add('Buy milk');
       expect(manager.search("MILK"), [task]);
     });
 
     test('search finds a task by title', () {
-      Task task = manager.add('Buy Milk');
+      final Task task = manager.add('Buy Milk');
       expect(manager.search("milk"), [task]);
     });
 
     test('search finds a task by description', () {
-      Task task = manager.add('Study');
+      final Task task = manager.add('Study');
       task.description = 'learn about milk';
       expect(manager.search("milk"), [task]);
     });
