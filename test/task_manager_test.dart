@@ -98,5 +98,47 @@ void main() {
       expect(m.filter(tag: 'x').length, 2);
       expect(m.filter().length, 3);
     });
+
+    test('groupByCategory has a key for each existing category', () {
+      manager.add('a', category: 'home');
+      manager.add('b', category: 'home');
+      manager.add('c', category: 'work');
+
+      expect(manager.groupByCategory().keys.toSet(), {'home', 'work'});
+    });
+
+    test('groupByCategory lists have the correct length', () {
+      manager.add('a', category: 'home');
+      manager.add('b', category: 'home');
+      manager.add('c', category: 'work');
+
+      final groups = manager.groupByCategory();
+
+      expect(groups['home']!.length, 2);
+      expect(groups['work']!.length, 1);
+    });
+
+    test('groupByCategory puts each task in the right list', () {
+      final a = manager.add('a', category: 'home');
+      final b = manager.add('b', category: 'work');
+
+      final groups = manager.groupByCategory();
+
+      expect(groups['home'], [a]);
+      expect(groups['work'], [b]);
+    });
+
+    test('groupByCategory uses general for a task without category', () {
+      final t = manager.add('a');
+
+      final groups = manager.groupByCategory();
+
+      expect(groups.keys.toSet(), {'general'});
+      expect(groups['general'], [t]);
+    });
+
+    test('groupByCategory returns an empty map when there are no tasks', () {
+      expect(manager.groupByCategory(), isEmpty);
+    });
   });
 }
