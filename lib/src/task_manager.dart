@@ -50,7 +50,7 @@ class TaskManager {
         .toList();
   }
 
-List<Task> filter({bool? done, String? tag}) {
+  List<Task> filter({bool? done, String? tag}) {
     Iterable<Task> result = _tasks;
 
     if (done != null) {
@@ -63,6 +63,13 @@ List<Task> filter({bool? done, String? tag}) {
     return result.toList();
   }
 
+  Map<String, List<Task>> groupByCategory() {
+    final result = <String, List<Task>>{};
 
+    for (final task in _tasks) {
+      result.putIfAbsent(task.category, () => []).add(task);
+    }
 
+    return result;
+  }
 }
