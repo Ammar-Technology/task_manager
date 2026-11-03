@@ -49,4 +49,20 @@ class TaskManager {
             task.description.toLowerCase().contains(query))
         .toList();
   }
+
+List<Task> filter({bool? done, String? tag}) {
+    Iterable<Task> result = _tasks;
+
+    if (done != null) {
+      result = result.where((t) => t.isDone == done);
+    }
+    if (tag != null) {
+      result = result.where((t) => t.tags.contains(tag));
+    }
+
+    return result.toList();
+  }
+
+
+
 }
