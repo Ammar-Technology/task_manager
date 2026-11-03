@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'task.dart';
+import 'package:task_manager/src/task.dart';
 
 class Storage {
   final String filePath;
