@@ -86,5 +86,17 @@ void main() {
       task.description = 'learn about milk';
       expect(manager.search("milk"), [task]);
     });
+
+    test('filter by done and tag together', () {
+      final m = TaskManager();
+      m.add('a', tags: {'x'});
+      m.add('b', tags: {'x'});
+      m.add('c');
+      m.markDone(m.getAll()[0].id);
+
+      expect(m.filter(done: true, tag: 'x').length, 1);
+      expect(m.filter(tag: 'x').length, 2);
+      expect(m.filter().length, 3);
+    });
   });
 }
