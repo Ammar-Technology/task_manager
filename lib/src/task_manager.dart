@@ -39,4 +39,14 @@ class TaskManager {
   List<Task> getAll() {
     return List.unmodifiable(_tasks);
   }
+
+  List<Task> search(String text) {
+    final query = text.toLowerCase();
+
+    return _tasks
+    .where((task) => 
+        task.title.toLowerCase().contains(query) ||
+        task.description.toLowerCase().contains(query))
+    .toList();
+  }
 }
