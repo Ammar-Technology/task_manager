@@ -44,9 +44,9 @@ class TaskManager {
     final query = text.toLowerCase();
 
     return _tasks
-    .where((task) => 
-        task.title.toLowerCase().contains(query) ||
-        task.description.toLowerCase().contains(query))
-    .toList();
+        .where((task) =>
+            task.title.toLowerCase().contains(query) ||
+            task.description.toLowerCase().contains(query))
+        .toList();
   }
 }

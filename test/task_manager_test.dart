@@ -70,5 +70,21 @@ void main() {
       expect(() => manager.getAll().add(Task(title: 'Study Dart')),
           throwsUnsupportedError);
     });
+
+    test('search is case-insensitive', () {
+      Task task = manager.add('Buy milk');
+      expect(manager.search("MILK"), [task]);
+    });
+
+    test('search finds a task by title', () {
+      Task task = manager.add('Buy Milk');
+      expect(manager.search("milk"), [task]);
+    });
+
+    test('search finds a task by description', () {
+      Task task = manager.add('Study');
+      task.description = 'learn about milk';
+      expect(manager.search("milk"), [task]);
+    });
   });
 }
