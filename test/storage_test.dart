@@ -10,8 +10,14 @@ void main() {
     });
 
     test('File Does Not Exist', () {
-      final storage = Storage();
-      expect(storage.load(), []);
+      final tempDir = Directory.systemTemp.createTempSync();
+      final filePath = '${tempDir.path}/tasks.json';
+      final storage = Storage(filePath: filePath);
+
+      expect(storage.load(), isEmpty);
+      expect(File('$filePath.bak').existsSync(), isFalse);
+
+      tempDir.deleteSync(recursive: true);
     });
 
     test('save and load roundtrip successfully', () {
@@ -37,8 +43,13 @@ void main() {
     test('File Is Empty', () {
       final tempDir = Directory.systemTemp.createTempSync();
       final filePath = '${tempDir.path}/tasks.json';
+      File(filePath).writeAsStringSync('');
       final storage = Storage(filePath: filePath);
-      expect(storage.load(), []);
+
+      expect(storage.load(), isEmpty);
+      expect(File(filePath).existsSync(), isTrue);
+      expect(File('$filePath.bak').existsSync(), isFalse);
+
       tempDir.deleteSync(recursive: true);
     });
 
@@ -50,6 +61,31 @@ void main() {
       final storage = Storage(filePath: filePath);
       final loadedTasks = storage.load();
       expect(loadedTasks, isEmpty);
+      expect(File('$filePath.bak').existsSync(), isTrue);
+      expect(File(filePath).existsSync(), isFalse);
+
+      tempDir.deleteSync(recursive: true);
+    });
+
+    test('File Contains Only Whitespace', () {
+      final tempDir = Directory.systemTemp.createTempSync();
+      final filePath = '${tempDir.path}/tasks.json';
+      File(filePath).writeAsStringSync('  \n\t\n');
+      final storage = Storage(filePath: filePath);
+
+      expect(storage.load(), isEmpty);
+      expect(File('$filePath.bak').existsSync(), isFalse);
+
+      tempDir.deleteSync(recursive: true);
+    });
+
+    test('Root Is Not A List', () {
+      final tempDir = Directory.systemTemp.createTempSync();
+      final filePath = '${tempDir.path}/tasks.json';
+      File(filePath).writeAsStringSync('{"id": 1}');
+      final storage = Storage(filePath: filePath);
+
+      expect(storage.load(), isEmpty);
       expect(File('$filePath.bak').existsSync(), isTrue);
       expect(File(filePath).existsSync(), isFalse);
 
