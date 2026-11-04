@@ -227,5 +227,4 @@ class Cli {
     stdout.writeln('  help                   Show this help');
     stdout.writeln('  exit                   Quit (interactive mode only)');
   }
-
 }
